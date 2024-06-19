@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>delete many</title>
+</head>
+<body>
+<h1>Delete Many Categories</h1>
+<p>
+    <a href="/category">Back to list</a>
+</p>
+
+<form th:action="@{/category/delete-many}" method="post" th:object="${eList}" >
+    <table border="1" style="border-collapse: collapse">
+        <tr>
+            <th>Category</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Select</th>
+        </tr>
+        <th:block th:each="el : ${eList}" >
+            <tr>
+                <td th:text="${el.categoryName}"></td>
+                <td><a th:href="@{/edit/{id} (id=${el.categoryId})}">Edit</a></td>
+                <td><a th:href="@{/delete/{id} (id=${el.categoryId})}">Delete</a></td>
+                <td><input type="checkbox" name="ids" th:value="${el.categoryId}"></td>
+            </tr>
+        </th:block>
+    </table>
+    <br>
+    <input type="submit" value="Delete selected">
+</form>
+</body>
+</html>

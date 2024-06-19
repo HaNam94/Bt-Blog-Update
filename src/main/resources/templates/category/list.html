@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>list</title>
+</head>
+<body>
+<a href="/">Home</a>
+<br><br>
+<a href="/category/create">Create New</a><br><br>
+<!--<a href="/category/create-on-list">Create On List</a>-->
+<hr>
+
+<p>
+<h1>Category List</h1>
+<span style="color: blue" th:text="${COUNT_MSG}"></span>
+</p>
+
+<div th:if="${msg}">
+    <span style="color: red" th:text="${msg}"></span>
+    <br><br>
+</div>
+
+<!-- This form is only for delete many -->
+<form id="list-form" th:object="${eList}">
+    <table border="1" style="border-collapse: collapse">
+        <tr>
+            <th>Category Name</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th><input id="select" type="button" th:value="select" onclick="deleteMany('category')"/></th>
+        </tr>
+        <th:block th:each="el : ${eList}">
+            <tr>
+                <td><a th:text="${el.categoryName}" th:href="@{/category/blog-list/{id} (id = ${el.categoryId})}"></a></td>
+                <td><a th:href="@{/category/edit/{id} (id=${el.categoryId})}">Edit</a></td>
+                <td><a th:href="@{/category/delete/{id} (id=${el.categoryId})}">Delete</a></td>
+                <td><input id="checkbox" type="checkbox" name="ids" th:value="${el.categoryId}" onclick="changeButton()"></td>
+            </tr>
+        </th:block>
+    </table>
+</form>
+
+<script>
+
+    // This function is used for delete many
+    function changeButton() {
+        let size = document.getElementsByName('ids').length;
+        let check = false;
+        for (let i = 0; i< size; i++){
+            let checkBox = document.getElementsByName('ids')[i];
+            if (checkBox.checked){
+                document.getElementById('select').value = 'remove';
+                check = true;
+                break;
+            }
+        }
+
+        if (!check){
+            document.getElementById('select').value = 'select';
+        }
+    }
+
+    // Delete many function
+    function deleteMany(elName) {
+        let selectButton = document.getElementById('select');
+        if(selectButton.value === 'remove') {
+            let list_form = document.getElementById('list-form');
+            list_form.action = "/" + elName + "/delete-many";
+            list_form.method = "post";
+            list_form.submit();
+        }
+    }
+
+</script>
+</body>
+</html>

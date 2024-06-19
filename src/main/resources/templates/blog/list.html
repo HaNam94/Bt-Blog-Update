@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog</title>
+</head>
+<body>
+<a href="/">Home</a>
+<br><br>
+<a href="/blog/create">Create new blog</a>
+<h3>Blog List</h3>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>View</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    <th:block th:each="el : ${eList}">
+        <tr>
+            <td th:text="${el.title}"></td>
+            <td th:if="${el.category != null}" th:text="${el.category.categoryName}"></td>
+            <td th:if="${el.category == null}" th:text="${'NULL'}"></td>
+            <td><a th:href="@{/blog/view/{id} (id=${el.id})}">View</a></td>
+            <td><a th:href="@{/blog/edit/{id} (id=${el.id})}">Edit</a></td>
+            <td><a th:href="@{/blog/delete/{id} (id=${el.id})}">Delete</a></td>
+        </tr>
+    </th:block>
+</table>
+
+<p style="color: red" th:if="${msg}">
+    <span th:text="${msg}"></span>
+</p>
+</body>
+</html>
